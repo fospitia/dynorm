@@ -82,6 +82,7 @@ class Schema {
 
   #validate;
   #schema;
+  #schemaName;
 
   constructor(id) {
     this.#id = id;
@@ -93,18 +94,28 @@ class Schema {
     const defSchema = Object.assign({}, dynorm.schema);
     let schema = null;
     for (const schemaName in defSchema.definitions) {
-      if (defSchema.definitions[schemaName].$id === id) {
+      if (defSchema.definitions[schemaName].$id === this.#id) {
         schema = defSchema.definitions[schemaName];
-        continue;
+        this.#schemaName = schemaName;
+        break;
       }
     }
 
     for (const propName in schema.properties) {
       const prop = schema.properties[propName];
-      const ref = prop.$ref;
-      if (!ref || !prop.required) { continue; }
-      defSchema.definitions[ref].required = prop.required;
+      const refSchemaName = prop.$ref;
+      if (!refSchemaName || !prop.required) { continue; }
+      defSchema.definitions[refSchemaName].required = prop.required;
       delete prop.required;
+
+      // Delete self reference Schema
+      const refSchema = defSchema.definitions[refSchemaName];
+      for (const refPropName in refSchema.properties) {
+        const refProp = refSchema.properties[refPropName];
+        if (refProp.$ref === this.#schemaName) {
+          delete refSchema.properties[refPropName];
+        }
+      }
     }
 
     const ajv = new Ajv();
@@ -457,6 +468,7 @@ class Model {
             params.ExpressionAttributeNames[`#${key.rangeKey}`] = key.rangeKey;
           }
         }
+
         console.log('[save]', params);
         await this.#orm.client.put(params).promise();
       }
