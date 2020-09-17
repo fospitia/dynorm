@@ -1,0 +1,31 @@
+{
+  "name": "dynorm",
+  "version": "0.1.0",
+  "description": "DynamoDB ORM based in Json Schema and ES6 for use with Lambda (inspired in Dynamoose)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "fospitia@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "aws-sdk": "^2.748.0",
+    "eslint": "^7.8.1",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1"
+  },
+  "dependencies": {
+    "ajv": "^6.12.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fospitia/dynorm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/fospitia/dynorm/issues"
+  },
+  "homepage": "https://github.com/fospitia/dynorm#readme"
+}
